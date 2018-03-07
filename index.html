@@ -2,7 +2,9 @@
   <body>
     <p id='server-time'></p>
     <script>
-      var HOST = location.origin.replace(/^http/, 'ws')
+     // var HOST = location.origin.replace(/^http/, 'ws')
+      var HOST = 'wss://gspwebrtc2.herokuapp.com'
+      //gspwebrtc2.herokuapp.com
       var ws = new WebSocket(HOST);
       var el = document.getElementById('server-time');
 
