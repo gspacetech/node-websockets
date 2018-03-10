@@ -204,7 +204,7 @@ function hasRoomInitConnection(){
 				  if(connectionTemp.isInitiator === true){
 					  hasinitiator = true;
 					  console.log("inititor found");
-				  }
+			  }
 			  }
 		}
 	console.log("has inititor " + hasinitiator);
