@@ -166,8 +166,8 @@ function sendTo(connection, message) {
 
 function sendToAllInRoom(roomId, message) { 
 	console.log("room id "+roomId +" msg "+message);
-	for(var i in group.roomId){
-		var connection = group.room[i];
+	for(var i in group[roomId]){
+		var connection = group[roomId][i];
 		connection.send(JSON.stringify(message)); 
      	console.log(connection.id);
 	}
