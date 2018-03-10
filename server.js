@@ -32,7 +32,7 @@ group["roominit"]={};
 //group.room["nikhil"] = "connection1";
 //console.log("test 2d array "+group.room.length);
 //console.log("test 2d array "+group[room][nikhil]);
-  
+ 
 //when a user connects to our sever 
 wss.on('connection', function(connection) {
   
