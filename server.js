@@ -69,19 +69,31 @@ wss.on('connection', function(connection) {
 				}else{
 					console.log("init no user ", data.id+" "+data.roomId);
 					// add user id
-					connection.id = data.id;
+					if(hasRoomInitConnection()){
+						connection.id=data.id;
+					connection.isInitiator = false;
 					group[data.roomId][data.id] = connection;
 					
 					sendToAllInRoom(roomName, { 
                   		type: "join", 
                   		success: true 
                		}); 
+					}else{
+						connection.id=data.id;
+					connection.isInitiator = true;
+					group[data.roomId][data.id] = connection;
+					
+					sendToAllInRoom(roomName, { 
+                  		type: "joininit", 
+                  		success: true 
+               		}); 
+					}
 				}
             } else { 
 				// add room and user id
 				console.log("init no room  ", data.id+" "+data.roomId);
 				group[data.roomId]={};
-		    connection.id = data.id;
+		    		connection.id = data.id;
 				group[data.roomId][data.id] = connection;
 				
                //save user connection on the server 
@@ -179,6 +191,23 @@ wss.on('connection', function(connection) {
    connection.send("Hello world");
 	
 });
+
+function hasRoomInitConnection(){
+	var hasinitiator = false;
+	for(var i in group){
+			  var rooms = group[i];
+			  for(var j in rooms){
+				  var connectionTemp = rooms[j];
+				  if(connectionTemp.isInitiator === true){
+					  hasinitiator = true;
+					  console.log("inititor found");
+				  }
+			  }
+		}
+	
+	console.log("has inititor " + hasinitiator);
+	return hasinitiator;
+}
   
 function sendTo(connection, message) { 
    connection.send(JSON.stringify(message)); 
