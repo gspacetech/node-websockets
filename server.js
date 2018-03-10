@@ -158,6 +158,8 @@ wss.on('connection', function(connection) {
 				}
 			  }
 		}
+		  
+		  
          //delete users[connection.name]; 
 			
 //          if(connection.otherName) { 
@@ -171,7 +173,7 @@ wss.on('connection', function(connection) {
 // //                }); 
 // //             }  
 //          } 
-     // } 
+      } 
    });
 	
    connection.send("Hello world");
