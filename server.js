@@ -30,6 +30,7 @@ var users = {};
 var group = {};
 group["room"]={};
 group.room["gaurav"] = "connection";
+
 group.room["nikhil"] = "connection1";
 console.log("test 2d array "+group.room);
   
