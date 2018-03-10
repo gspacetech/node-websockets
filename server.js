@@ -56,19 +56,20 @@ wss.on('connection', function(connection) {
       //switching type of the user message 
       switch (data.type) { 
          //when a user tries to login 
+		      var roomName = data.roomId;
          case "init": 
             console.log("User logged", data.id+" "+data.roomId); 
             //if anyone is logged in with this username then refuse 
 			
             if(group[data.roomId]) { 
-				var roomId = data.roomId;
-				if(roomId[data.id]){
+				
+				if(group[data.roomId][data.id]){
 					
 				}else{
 					// add user id
 					group[data.roomId][data.id] = connection;
 					
-					sendToAllInRoom(roomId, { 
+					sendToAllInRoom(roomName, { 
                   		type: "join", 
                   		success: true 
                		}); 
@@ -83,7 +84,7 @@ wss.on('connection', function(connection) {
              //  users[data.name] = connection; 
              //  connection.name = data.name; 
 					
-               sendToAllInRoom(roomId, { 
+               sendToAllInRoom(roomName, { 
                   type: "init", 
                   success: true 
                }); 
@@ -102,7 +103,7 @@ wss.on('connection', function(connection) {
                //setting that UserA connected with UserB 
               // connection.otherName = data.name; 
 					
-               sendToAllInRoom(roomId, { 
+               sendToAllInRoom(roomName, { 
                   type: "offer", 
                   offer: data.offer 
                   //name: connection.name 
@@ -114,41 +115,13 @@ wss.on('connection', function(connection) {
          case "answer": 
             console.log("Sending answer to: All"); 
             //for ex. UserB answers UserA 
-            sendToAllInRoom(roomId, { 
+            sendToAllInRoom(roomName, { 
                   type: "answer", 
                   answer: data.answer 
                   //name: connection.name 
                });
 				
-            break;
-				
-         case "candidate": 
-            console.log("Sending candidate to:",data.name);
-            var conn = users[data.name];  
-				
-            if(conn != null) { 
-               sendTo(conn, { 
-                  type: "candidate", 
-                  candidate: data.candidate 
-               }); 
-            } 
-				
-            break;
-				
-         case "leave": 
-            console.log("Disconnecting from", data.name); 
-            var conn = users[data.name]; 
-            conn.otherName = null; 
-				
-            //notify the other user so he can disconnect his peer connection 
-            if(conn != null) { 
-               sendTo(conn, { 
-                  type: "leave"
-               });
-            }  
-				
-            break;
-				
+            break;		
          default: 
             sendTo(connection, { 
                type: "error", 
@@ -165,19 +138,19 @@ wss.on('connection', function(connection) {
    connection.on("close", function() { 
 	
       if(connection.name) { 
-         delete users[connection.name]; 
+         //delete users[connection.name]; 
 			
-         if(connection.otherName) { 
-            console.log("Disconnecting from ", connection.otherName); 
-            var conn = users[connection.otherName]; 
-            conn.otherName = null;
+//          if(connection.otherName) { 
+//             console.log("Disconnecting from ", connection.otherName); 
+//             var conn = users[connection.otherName]; 
+//             conn.otherName = null;
 				
-            if(conn != null) { 
-               sendTo(conn, { 
-                  type: "leave" 
-               }); 
-            }  
-         } 
+// //             if(conn != null) { 
+// //                sendTo(conn, { 
+// //                   type: "leave" 
+// //                }); 
+// //             }  
+//          } 
       } 
    });
 	
