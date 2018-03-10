@@ -39,7 +39,7 @@ group["roominit"]={};
 //when a user connects to our sever 
 wss.on('connection', function(connection) {
   
-   console.log("User connected");
+   //console.log("User connected");
 	 
    //when server gets a message from a connected user 
    connection.on('message', function(message) {
@@ -52,7 +52,7 @@ wss.on('connection', function(connection) {
          console.log("Invalid JSON"); 
          data = {}; 
       }
-	console.log("User type "+ data.type);	  
+	//console.log("User type "+ data.type);	  
       //switching type of the user message 
       switch (data.type) { 
          //when a user tries to login 
@@ -190,6 +190,7 @@ function sendTo(connection, message) {
 }
 
 function sendToAllInRoom(roomId, message) { 
+	console.log("room id "+roomId +"msg"+message);
 	for(var i in group.roomId){
 		var connection = group.room[i];
 		connection.send(JSON.stringify(message)); 
