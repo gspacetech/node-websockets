@@ -29,11 +29,11 @@ var users = {};
 
 var group = {};
 group["room"]={};
-group.room["gaurav"] = "connection gaurav";
+// group.room["gaurav"] = "connection gaurav";
 
-group.room["nikhil"] = "connection nikhil";
-console.log("test 2d array "+group.room.nikhil);
-console.log("test 2d array "+group["room"]["nikhil"]);
+// group.room["nikhil"] = "connection nikhil";
+// console.log("test 2d array "+group.room.nikhil);
+// console.log("test 2d array "+group["room"]["nikhil"]);
 
   
 //when a user connects to our sever 
