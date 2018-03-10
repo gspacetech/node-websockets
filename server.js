@@ -63,6 +63,10 @@ wss.on('connection', function(connection) {
 			//console.log("init room has ", data.id+" "+data.roomId); 	
 				if(group[data.roomId][data.id]){
 					console.log("init user has ", data.id+" "+data.roomId); 
+					sendToAllInRoom(roomName, { 
+                  		type: "join", 
+                  		success: true 
+               		}); 
 				}else{
 					
 					// add user id
