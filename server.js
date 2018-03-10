@@ -63,13 +63,14 @@ wss.on('connection', function(connection) {
             //if anyone is logged in with this username then refuse 
 			
             if(group[data.roomId]) { 
-			console.log("init room has ", data.id+" "+data.roomId); 	
+			//console.log("init room has ", data.id+" "+data.roomId); 	
 				if(group[data.roomId][data.id]){
 					console.log("init user has ", data.id+" "+data.roomId); 
 				}else{
-					console.log("init no user ", data.id+" "+data.roomId);
+					
 					// add user id
 					if(hasRoomInitConnection()){
+						console.log("join no user ", data.id+" "+data.roomId);
 						connection.id=data.id;
 					connection.isInitiator = false;
 					group[data.roomId][data.id] = connection;
@@ -79,6 +80,7 @@ wss.on('connection', function(connection) {
                   		success: true 
                		}); 
 					}else{
+						console.log("joininit no user ", data.id+" "+data.roomId);
 						connection.id=data.id;
 					connection.isInitiator = true;
 					group[data.roomId][data.id] = connection;
@@ -94,6 +96,7 @@ wss.on('connection', function(connection) {
 				console.log("init no room  ", data.id+" "+data.roomId);
 				group[data.roomId]={};
 		    		connection.id = data.id;
+		    		connection.isInitiator = true;
 				group[data.roomId][data.id] = connection;
 				
                //save user connection on the server 
