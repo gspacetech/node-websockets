@@ -194,6 +194,7 @@ wss.on('connection', function(connection) {
 	
 });
 
+
 function hasRoomInitConnection(){
 	var hasinitiator = false;
 	for(var i in group){
