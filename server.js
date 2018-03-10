@@ -35,7 +35,7 @@ group["roominit"]={};
  
 //when a user connects to our sever 
 wss.on('connection', function(connection) {
-  
+ 
    //console.log("User connected");
 	 
    //when server gets a message from a connected user 
