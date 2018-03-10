@@ -52,11 +52,12 @@ wss.on('connection', function(connection) {
          console.log("Invalid JSON"); 
          data = {}; 
       }
+	    var roomName = data.roomId;
 	//console.log("User type "+ data.type);	  
       //switching type of the user message 
       switch (data.type) { 
          //when a user tries to login 
-		      var roomName = data.roomId;
+		     
          case "init": 
             console.log("User logged", data.id+" "+data.roomId); 
             //if anyone is logged in with this username then refuse 
