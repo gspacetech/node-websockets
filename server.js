@@ -207,7 +207,6 @@ function hasRoomInitConnection(){
 				  }
 			  }
 		}
-	
 	console.log("has inititor " + hasinitiator);
 	return hasinitiator;
 }
