@@ -69,6 +69,7 @@ wss.on('connection', function(connection) {
 				}else{
 					console.log("init no user ", data.id+" "+data.roomId);
 					// add user id
+					connection.id = data.id;
 					group[data.roomId][data.id] = connection;
 					
 					sendToAllInRoom(roomName, { 
@@ -80,6 +81,7 @@ wss.on('connection', function(connection) {
 				// add room and user id
 				console.log("init no room  ", data.id+" "+data.roomId);
 				group[data.roomId]={};
+		    connection.id = data.id;
 				group[data.roomId][data.id] = connection;
 				
                //save user connection on the server 
@@ -139,7 +141,23 @@ wss.on('connection', function(connection) {
    //this may help if we are still in "offer","answer" or "candidate" state 
    connection.on("close", function() { 
 	
-      if(connection.name) { 
+      if(connection.id) { 
+		  for(var i in group){
+			  var rooms = group[i];
+			  for(var j in rooms){
+				  var connectionTemp = rooms[j];
+				  if(connectionTemp.id === connection.id){
+					  delete rooms[j];
+					  console.log("delete");
+				  }else{
+					  connectionTemp.send(JSON.stringify( 
+                  		type: "leave"
+                  		//name: connection.name 
+               		})); 
+     			console.log("leave");
+				}
+			  }
+		//}
          //delete users[connection.name]; 
 			
 //          if(connection.otherName) { 
