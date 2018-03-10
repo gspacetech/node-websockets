@@ -26,6 +26,12 @@ const wss = new SocketServer({ server });
 
 //all connected to the server users 
 var users = {};
+
+var group = {};
+group["room"]={};
+group.room["gaurav"] = "connection";
+group.room["nikhil"] = "connection1";
+console.log("test 2d array "+group.room);
   
 //when a user connects to our sever 
 wss.on('connection', function(connection) {
