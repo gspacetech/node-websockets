@@ -159,22 +159,22 @@ wss.on('connection', function(connection) {
    connection.on("close", function() { 
 
       if(connection.id) { 
-// 		  for(var i in group){
-// 			  var rooms = group[i];
-// 			  for(var j in rooms){
-// 				  var connectionTemp = rooms[j];
-// 				  if(connectionTemp.id === connection.id){
-// 					  delete rooms[j];
-// 					  console.log("delete");
-// 				  }else{
-// 					  connectionTemp.send(JSON.stringify( {
-//                   		type: "leave"
-//                   		//name: connection.name 
-//                		})); 
-//      			console.log("leave");
-// 				}
-// 			  }
-// 		}
+		  for(var i in group){
+			  var rooms = group[i];
+			  for(var j in rooms){
+				  var connectionTemp = rooms[j];
+				  if(connectionTemp.id === connection.id){
+					  delete rooms[j];
+					  console.log("delete");
+				  }else{
+					  connectionTemp.send(JSON.stringify( {
+                  		type: "leave"
+                  		//name: connection.name 
+               		})); 
+     			console.log("leave");
+				}
+			  }
+		}
 		  
 	
          //delete users[connection.name]; 
