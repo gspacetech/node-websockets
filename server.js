@@ -27,14 +27,13 @@ const wss = new SocketServer({ server });
 //all connected to the server users 
 var users = {};
 
-
 var group = {};
 group["roominit"]={};
-// group.room["gaurav"] = "connection gaurav";
+//group.room["gaurav"] = "connection";
+//group.room["nikhil"] = "connection1";
+//console.log("test 2d array "+group.room.length);
+//console.log("test 2d array "+group[room][nikhil]);
 
-// group.room["nikhil"] = "connection nikhil";
-// console.log("test 2d array "+group.room.nikhil);
-// console.log("test 2d array "+group["room"]["nikhil"]);
 
   
 //when a user connects to our sever 
@@ -44,7 +43,7 @@ wss.on('connection', function(connection) {
 	 
    //when server gets a message from a connected user 
    connection.on('message', function(message) {
-	 
+	 console.log("User message "+ message);
       var data; 
       //accepting only JSON messages 
       try { 
@@ -57,21 +56,35 @@ wss.on('connection', function(connection) {
       //switching type of the user message 
       switch (data.type) { 
          //when a user tries to login 
-         case "login": 
-            console.log("User logged", data.name); 
+         case "init": 
+            console.log("User logged", data.id+" "+data.roomId); 
             //if anyone is logged in with this username then refuse 
-            if(users[data.name]) { 
-               sendTo(connection, { 
-                  type: "login", 
-                  success: false 
-               }); 
-            } else { 
-               //save user connection on the server 
-               users[data.name] = connection; 
-               connection.name = data.name; 
+			  
+            if(group[data.roomId]) { 
+				var roomId = group[data.roomId]
+				if(roomId[data.id]){
 					
-               sendTo(connection, { 
-                  type: "login", 
+				}else{
+					// add user id
+					group[data.roomId][data.id] = connection;
+					
+					sendToAllInRoom(roomId, { 
+                  		type: "join", 
+                  		success: true 
+               		}); 
+				}
+            } else { 
+				// add room and user id
+				
+				group[data.roomId]={};
+				group[data.roomId][data.id] = connection;
+				
+               //save user connection on the server 
+             //  users[data.name] = connection; 
+             //  connection.name = data.name; 
+					
+               sendToAllInRoom(roomId, { 
+                  type: "init", 
                   success: true 
                }); 
             }
@@ -80,36 +93,32 @@ wss.on('connection', function(connection) {
 				
          case "offer": 
             //for ex. UserA wants to call UserB 
-            console.log("Sending offer to: ", data.name); 
+            console.log("Sending offer to: all"); 
 				
             //if UserB exists then send him offer details 
-            var conn = users[data.name]; 
+           // var conn = users[data.id]; 
 				
-            if(conn != null) { 
+          //  if(conn != null) { 
                //setting that UserA connected with UserB 
-               connection.otherName = data.name; 
+              // connection.otherName = data.name; 
 					
-               sendTo(conn, { 
+               sendToAllInRoom(roomId, { 
                   type: "offer", 
-                  offer: data.offer, 
-                  name: connection.name 
+                  offer: data.offer 
+                  //name: connection.name 
                }); 
-            } 
+          //  } 
 				
             break;
 				
          case "answer": 
-            console.log("Sending answer to: ", data.name); 
+            console.log("Sending answer to: All"); 
             //for ex. UserB answers UserA 
-            var conn = users[data.name]; 
-				
-            if(conn != null) { 
-               connection.otherName = data.name; 
-               sendTo(conn, { 
+            sendToAllInRoom(roomId, { 
                   type: "answer", 
                   answer: data.answer 
-               }); 
-            } 
+                  //name: connection.name 
+               });
 				
             break;
 				
@@ -178,4 +187,12 @@ wss.on('connection', function(connection) {
   
 function sendTo(connection, message) { 
    connection.send(JSON.stringify(message)); 
+}
+
+function sendToAllInRoom(roomId, message) { 
+	for(var i in group.roomId){
+		var connection = group.room[i];
+		connection.send(JSON.stringify(message)); 
+     	console.log(connection.id);
+	}
 }
