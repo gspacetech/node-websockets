@@ -67,6 +67,7 @@ wss.on('connection', function(connection) {
 				if(group[data.roomId][data.id]){
 					console.log("init user has ", data.id+" "+data.roomId); 
 				}else{
+					console.log("init no user ", data.id+" "+data.roomId);
 					// add user id
 					group[data.roomId][data.id] = connection;
 					
