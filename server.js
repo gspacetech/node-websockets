@@ -157,7 +157,7 @@ wss.on('connection', function(connection) {
      			console.log("leave");
 				}
 			  }
-		//}
+		}
          //delete users[connection.name]; 
 			
 //          if(connection.otherName) { 
@@ -171,7 +171,7 @@ wss.on('connection', function(connection) {
 // //                }); 
 // //             }  
 //          } 
-      } 
+     // } 
    });
 	
    connection.send("Hello world");
