@@ -150,7 +150,7 @@ wss.on('connection', function(connection) {
 					  delete rooms[j];
 					  console.log("delete");
 				  }else{
-					  connectionTemp.send(JSON.stringify( 
+					  connectionTemp.send(JSON.stringify( {
                   		type: "leave"
                   		//name: connection.name 
                		})); 
