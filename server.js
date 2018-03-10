@@ -114,7 +114,8 @@ wss.on('connection', function(connection) {
 				
             //if UserB exists then send him offer details 
            // var conn = users[data.id]; 
-				
+			
+		      
           //  if(conn != null) { 
                //setting that UserA connected with UserB 
               // connection.otherName = data.name; 
