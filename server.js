@@ -129,7 +129,7 @@ wss.on('connection', function(connection) {
             break;
 				
          case "answer": 
-            console.log("Sending answer to: All"); 
+            //console.log("Sending answer to: All"); 
             //for ex. UserB answers UserA 
             sendToAllInRoom(roomName, { 
                   type: "answer", 
@@ -213,7 +213,7 @@ function sendTo(connection, message) {
 
 
 function sendToAllInRoom(roomId, message) { 
-	console.log("room id "+roomId +" msg "+message);
+	//console.log("room id "+roomId +" msg "+message);
 	for(var i in group[roomId]){
 		var connection = group[roomId][i];
 		connection.send(JSON.stringify(message)); 
