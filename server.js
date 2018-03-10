@@ -74,7 +74,7 @@ wss.on('connection', function(connection) {
 						connection.id=data.id;
 					connection.isInitiator = false;
 					group[data.roomId][data.id] = connection;
-					
+				
 					sendToAllInRoom(roomName, { 
                   		type: "join", 
                   		success: true 
