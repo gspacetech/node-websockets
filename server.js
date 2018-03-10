@@ -214,6 +214,7 @@ function sendTo(connection, message) {
    connection.send(JSON.stringify(message)); 
 }
 
+
 function sendToAllInRoom(roomId, message) { 
 	console.log("room id "+roomId +" msg "+message);
 	for(var i in group[roomId]){
