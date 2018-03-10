@@ -59,7 +59,7 @@ wss.on('connection', function(connection) {
          //when a user tries to login 
 		     
          case "init": 
-            console.log("User logged", data.id+" "+data.roomId); 
+            //console.log("User logged", data.id+" "+data.roomId); 
             //if anyone is logged in with this username then refuse 
 			
             if(group[data.roomId]) { 
