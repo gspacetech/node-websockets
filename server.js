@@ -63,9 +63,9 @@ wss.on('connection', function(connection) {
             //if anyone is logged in with this username then refuse 
 			
             if(group[data.roomId]) { 
-				
+			console.log("init room has ", data.id+" "+data.roomId); 	
 				if(group[data.roomId][data.id]){
-					
+					console.log("init user has ", data.id+" "+data.roomId); 
 				}else{
 					// add user id
 					group[data.roomId][data.id] = connection;
