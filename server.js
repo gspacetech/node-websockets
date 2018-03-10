@@ -29,12 +29,12 @@ var users = {};
 
 var group = {};
 group["room"]={};
-group.room["gaurav"] = "connection";
+group.room["gaurav"] = "connection gaurav";
 
-group.room["nikhil"] = "connection1";
+group.room["nikhil"] = "connection nikhil";
 console.log("test 2d array "+group.room.nikhil);
 console.log("test 2d array "+group["room"]["nikhil"]);
-console.log("test 2d array "+group[0][1]);
+
   
 //when a user connects to our sever 
 wss.on('connection', function(connection) {
