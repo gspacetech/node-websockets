@@ -52,7 +52,7 @@ wss.on('connection', function(connection) {
          console.log("Invalid JSON"); 
          data = {}; 
       }
-		  
+	console.log("User type "+ data.type);	  
       //switching type of the user message 
       switch (data.type) { 
          //when a user tries to login 
