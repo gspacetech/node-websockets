@@ -129,7 +129,7 @@ wss.on('connection', function(connection) {
             break;
 				
          case "answer": 
-            //console.log("Sending answer to: All"); 
+            console.log("Sending answer to: All "+ data); 
             //for ex. UserB answers UserA 
             sendToAllInRoom(roomName, { 
                   type: "answer", 
