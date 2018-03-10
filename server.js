@@ -77,7 +77,7 @@ wss.on('connection', function(connection) {
 				}
             } else { 
 				// add room and user id
-				
+				console.log("init no room  ", data.id+" "+data.roomId);
 				group[data.roomId]={};
 				group[data.roomId][data.id] = connection;
 				
