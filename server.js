@@ -190,7 +190,6 @@ wss.on('connection', function(connection) {
    connection.send("Hello world");
 
 });
-
 function hasRoomInitConnection(){
 	var hasinitiator = false;
 	for(var i in group){
