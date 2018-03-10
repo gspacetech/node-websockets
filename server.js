@@ -59,9 +59,9 @@ wss.on('connection', function(connection) {
          case "init": 
             console.log("User logged", data.id+" "+data.roomId); 
             //if anyone is logged in with this username then refuse 
-			  
+			
             if(group[data.roomId]) { 
-				var roomId = group[data.roomId]
+				var roomId = data.roomId;
 				if(roomId[data.id]){
 					
 				}else{
@@ -190,7 +190,7 @@ function sendTo(connection, message) {
 }
 
 function sendToAllInRoom(roomId, message) { 
-	console.log("room id "+roomId +"msg"+message);
+	console.log("room id "+roomId +" msg "+message);
 	for(var i in group.roomId){
 		var connection = group.room[i];
 		connection.send(JSON.stringify(message)); 
