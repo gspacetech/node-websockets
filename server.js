@@ -99,7 +99,7 @@ wss.on('connection', function(connection) {
                //save user connection on the server 
              //  users[data.name] = connection; 
              //  connection.name = data.name; 
-					
+				
                sendToAllInRoom(roomName, { 
                   type: "init", 
                   success: true 
