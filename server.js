@@ -180,7 +180,7 @@ wss.on('connection', function(connection) {
      					console.log("leave");
 				}
 			  }
-			 
+			 console.log("group user count on close connection "+countProperties(group[rooms]));
 			if(countProperties(group[rooms]) === 0){
 				console.log("room deleted "+rooms);
 		 		delete group[rooms];
