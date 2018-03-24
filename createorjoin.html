@@ -24,7 +24,7 @@ var sdpConstraints = {
 //     'urls': 'stun:stun.l.google.com:19302'
 //   }]
 };
-var pc = new RTCPeerConnection(configuration);
+var pc = new RTCPeerConnection(configuration, sdpConstraints);
 var dc;
 var initiated = false;
 	
