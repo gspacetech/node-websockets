@@ -191,7 +191,7 @@ function createAnswerSDP(offer) {
   }, function () {
 	  console.warn("Couldn't create offer")
   },
-  sdpConstraints);
+  configuration, sdpConstraints);
 };
 	
 function sendAnswer(answerDesc){
