@@ -163,7 +163,7 @@ wss.on('connection', function(connection) {
    //when user exits, for example closes a browser window 
    //this may help if we are still in "offer","answer" or "candidate" state 
    connection.on("close", function() { 
-
+console.log("group count on close connection start "+countProperties(group));
       if(connection.id) { 
 		  for(var i in group){
 			  var rooms = group[i];
@@ -186,7 +186,7 @@ wss.on('connection', function(connection) {
 		 		delete group[rooms];
 			}
 		}
-		
+		console.log("group count on close connection end "+countProperties(group));
          //delete users[connection.name]; 
 		
 //          if(connection.otherName) { 
