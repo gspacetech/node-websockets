@@ -190,8 +190,10 @@ function createAnswerSDP(offer) {
 	sendAnswer(answerDesc);
   }, function () {
 	  console.warn("Couldn't create offer")
-  },
-  configuration, sdpConstraints);
+  }
+// 		  ,
+//   configuration, sdpConstraints
+		 );
 };
 	
 function sendAnswer(answerDesc){
