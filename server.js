@@ -61,13 +61,16 @@ wss.on('connection', function(connection) {
 			
             if(group[data.roomId]) { 
 			//console.log("init room has ", data.id+" "+data.roomId); 	
-				if(group[data.roomId][data.id]){
+// 				if(group[data.roomId][data.id]){
 					console.log("init user has ", data.id+" "+data.roomId); 
-					sendToAllInRoom(roomName, { 
-                  		type: "join", 
-                  		success: true 
-               		}); 
-				}else{
+// 					connection.id=data.id;
+// 					connection.isInitiator = false;
+// 					group[data.roomId][data.id] = connection;
+// 					sendToAllInRoom(roomName, { 
+//                   		type: "join", 
+//                   		success: true 
+//                		}); 
+// 				}else{
 					
 					// add user id
 					if(hasRoomInitConnection()){
@@ -78,6 +81,7 @@ wss.on('connection', function(connection) {
 				
 					sendToAllInRoom(roomName, { 
                   		type: "join", 
+				groupSize: countProperties(group[data.roomId]),		
                   		success: true 
                		}); 
 					}else{
@@ -88,10 +92,11 @@ wss.on('connection', function(connection) {
 					
 					sendToAllInRoom(roomName, { 
                   		type: "joininit", 
+				groupSize: countProperties(group[data.roomId]),
                   		success: true 
                		}); 
 					}
-				}
+// 				}
             } else { 
 				// add room and user id
 				console.log("init no room  ", data.id+" "+data.roomId);
@@ -106,6 +111,7 @@ wss.on('connection', function(connection) {
 				
                sendToAllInRoom(roomName, { 
                   type: "init", 
+		  groupSize: countProperties(group[data.roomId]),
                   success: true 
                }); 
             }
@@ -210,6 +216,16 @@ function hasRoomInitConnection(){
 	console.log("has inititor " + hasinitiator);
 	return hasinitiator;
 }
+
+function countProperties (obj) {
+		var count = 0;
+		for (var property in obj) {
+			if (Object.prototype.hasOwnProperty.call(obj, property)) {
+				count++;
+			}
+		}
+		return count;
+	}
   
 function sendTo(connection, message) { 
    connection.send(JSON.stringify(message)); 
