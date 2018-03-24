@@ -62,7 +62,7 @@ wss.on('connection', function(connection) {
             if(group[data.roomId]) { 
 			//console.log("init room has ", data.id+" "+data.roomId); 	
 // 				if(group[data.roomId][data.id]){
-					console.log("init user has ", data.id+" "+data.roomId); 
+// 					console.log("init user has ", data.id+" "+data.roomId); 
 // 					connection.id=data.id;
 // 					connection.isInitiator = false;
 // 					group[data.roomId][data.id] = connection;
