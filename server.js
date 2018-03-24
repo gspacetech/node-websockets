@@ -180,10 +180,10 @@ console.log("group count on close connection start "+countProperties(group));
      					console.log("leave");
 				}
 			  }
-			 console.log("group user count on close connection "+countProperties(group[rooms]));
-			if(countProperties(group[rooms]) === 0){
+			 console.log("group user count on close connection "+countProperties(group[i]));
+			if(countProperties(group[i]) === 0){
 				console.log("room deleted "+rooms);
-		 		delete group[rooms];
+		 		delete group[i];
 			}
 		}
 		console.log("group count on close connection end "+countProperties(group));
