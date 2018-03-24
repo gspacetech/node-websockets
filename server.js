@@ -170,19 +170,23 @@ wss.on('connection', function(connection) {
 			  for(var j in rooms){
 				  var connectionTemp = rooms[j];
 				  if(connectionTemp.id === connection.id){
-					  delete rooms[j];
-					  console.log("delete");
+					delete rooms[j];
+					console.log("delete");
 				  }else{
-					  connectionTemp.send(JSON.stringify( {
-                  		type: "leave"
-                  		//name: connection.name 
-               		})); 
-     			console.log("leave");
+					connectionTemp.send(JSON.stringify( {
+                  				type: "leave"
+                  				//name: connection.name 
+               				})); 
+     					console.log("leave");
 				}
 			  }
+			 
+			if(countProperties(group[rooms) === 0){
+				console.log("room deleted "+rooms);
+		 		delete rooms;
+			}
 		}
-		  
-	
+		
          //delete users[connection.name]; 
 		
 //          if(connection.otherName) { 
