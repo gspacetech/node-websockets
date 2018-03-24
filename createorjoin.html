@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title> Test </title>
+  <link href="noserv.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+<h2><span id="status"> init </span></h2>
+<h3> CHAT </h3>
+<div id="chat">
+  <div id="chat-screen-wp">
+    <div id="chat-screen"></div>
+  </div>
+  <div id="ct"><input id="msg" disabled><button id="send" disabled>send</button></div>
+</div>
+<script>
+//var server       = { urls: "stun:stun.l.google.com:19302" };
+var sdpConstraints = { optional: [{RtpDataChannels: true}]  };
+var pc = new RTCPeerConnection(null);
+var dc;
+var initiated = false;
+	
+pc.oniceconnectionstatechange = function(e) {
+  var state = pc.iceConnectionState;
+  $('#status').html(state);
+  if (state == "connected") $("#msg, #send").attr("disabled", false);
+};
+	
+pc.ondatachannel  = function(e) {
+	dc = e.channel;
+	dcInit(dc)
+};
+	
+function dcInit(dc) {
+  dc.onopen    = function()  {
+	  $("textarea").attr("disabled",true);
+	  addMSG("CONNECTED!", "info")
+	// here u r connected
+	  
+  };
+  dc.onmessage = function(e) {
+	  if (e.data) addMSG(e.data, "other");
+  	// here u will get the msg
+	  
+  }
+}
+	
+pc.onicecandidate = function(e) {
+  if (e.candidate) return;
+	if(initiated){
+		$("#creater-sdp").val(JSON.stringify(pc.localDescription));
+	sendOffer();
+	}
+}
+
+var addMSG = function(msg, who) {
+  var wrap = $("<div>").addClass("wrap").appendTo($("#chat-screen"));
+  var div  = $("<div>").addClass(who).appendTo(wrap);
+  $("<span>").html(who).addClass("who").appendTo(div);
+  $("<span>").html(msg).addClass("msg").appendTo(div);
+  $("#chat-screen-wp").scrollTop($("#chat-screen").height());
+}
+
+var sendMSG = function() {
+  var value = $("#msg").val();
+  if (value) {
+    dc.send(value);
+    addMSG(value, "me");
+    $("#msg").val('');
+  }
+}
+
+$("#msg").keypress(function(e) {if(e.which == 13) {sendMSG()}});
+$("#send").click(sendMSG);
+
+var conn = new WebSocket('wss://gspwebrtc2.herokuapp.com'); 
+
+var url = new URL(window.location.href);
+	var roomName = url.searchParams.get("room"); //"test";//url.searchParams.get("room");
+	var userId = url.searchParams.get("id"); //"gaurav2"//url.searchParams.get("id");
+	console.log(roomName);
+	console.log(userId);
+	
+	conn.onopen = function () { 
+   	console.log("Connected to the signaling server");
+	
+	send({ 
+         type: "init"
+      });
+};
+	
+	conn.onclose = function(e) {
+    console.log('Disconnected!' +e);
+		initiated = false;
+};
+	
+//when we got a message from a signaling server 
+conn.onmessage = function (msg) { 
+  // console.log(" Got message ", msg.data); 
+   var data = JSON.parse(msg.data); 
+	
+   switch(data.type) { 
+      case "init": 
+		   // you r creator
+		   console.log("Got message", "init "+data.groupSize); 
+		   initiated = true;
+         break; 
+      case "join": 
+		   if(initiated){
+			   console.log("Got message", "join initiator "+data.groupSize); 
+			   createOfferSDP();
+		   }else{
+			  console.log("Got message", "joiner "+data.groupSize); 
+		   }
+		   break;
+
+		   case "joininit": 
+			   console.log("Got message", "join "+data.groupSize); 
+			   initiated = true;
+			   createOfferSDP();
+			   break;
+		case "offer": 
+		   if(! initiated){
+			    createAnswerSDP(data.offer);
+		   }
+         break; 
+      case "answer": 
+		   if(initiated){
+		   console.log("Got message", "answer " +msg.data);
+		  // $("#joiner-sdp").val(data.answer);
+		   start(data.answer);
+		   }
+         break; 
+//      case "candidate": 
+//		   console.log("Got message", "candidate");
+//         handleCandidate(data.candidate); 
+//         break; 
+//      case "leave": 
+//		   console.log("Got message", "candidate");
+//       //  handleLeave(); 
+//         break; 
+      default: 
+         break; 
+   } 
+}; 
+
+conn.onerror = function (err) { 
+   console.log("Got error", err); 
+}; 
+	
+function createOfferSDP() {
+  dc = pc.createDataChannel("chat");
+  pc.createOffer().then(function(e) {
+    pc.setLocalDescription(e)
+  });
+	
+  dc.onopen = function(){
+	  $("textarea").attr("disabled",true);
+	  addMSG("CONNECTED!", "info")
+	  // here u r connected
+  };
+	
+  dc.onmessage = function(e) {
+    if (e.data) addMSG(e.data, "other");
+	  // here u will get the msg 
+  }
+  
+};
+
+	
+function start(answerSDP) {
+  var answerDesc = new RTCSessionDescription(JSON.parse(answerSDP));
+  pc.setRemoteDescription(answerDesc);
+}
+	
+function createAnswerSDP(offer) {
+  var offerDesc = new RTCSessionDescription(JSON.parse(offer));
+  pc.setRemoteDescription(offerDesc)
+  pc.createAnswer(function (answerDesc) {
+   	pc.setLocalDescription(answerDesc)
+	
+	sendAnswer(answerDesc);
+  }, function () {
+	  console.warn("Couldn't create offer")
+  },
+  sdpConstraints);
+};
+	
+function sendAnswer(answerDesc){
+	send({ 
+         type: "answer",
+	  	answer:	JSON.stringify(answerDesc)
+      });
+}
+	
+function send(message) { 
+   //attach the other peer username to our messages
+   if (roomName && userId) { 
+      message.id = userId;
+	  message.roomId = roomName;
+   } 
+	
+   conn.send(JSON.stringify(message)); 
+};
+	
+function sendOffer(){
+	send({ 
+         type: "offer",
+	  	offer:	JSON.stringify(pc.localDescription)
+      });
+}
+
+	</script>
+
+</body>
+</html>
