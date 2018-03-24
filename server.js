@@ -181,7 +181,7 @@ wss.on('connection', function(connection) {
 				}
 			  }
 			 
-			if(countProperties(group[rooms) === 0){
+			if(countProperties(group[rooms]) === 0){
 				console.log("room deleted "+rooms);
 		 		delete rooms;
 			}
